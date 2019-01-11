@@ -1,14 +1,18 @@
-package A5;
-//
+//Aidan Weber-Concannon
+//260708481
+//Collaborators: Discussion board, https://tausiq.wordpress.com/2010/06/23/uva-10651-pebble-solitaire/?fbclid=IwAR3307bgZnNaVydsbqVZPH7KF5fHN5H0AAnwf3okavcqI2M828hzpeY4jzg
+
 import java.io.*;
 import java.util.*;
 import java.util.regex.*;
 import java.math.*;
 import static java.lang.System.out;
-//
+
 public class mancala {
-	//Dynamic programming 
+	//Dynamic programming solution using memory 
 	public static int minRocks (int[] board,HashMap<int[],Integer> memory){
+		
+		//See if it exists 
 		if(memory.get(board)!=null){
 			return memory.get(board);
 		}
@@ -24,42 +28,47 @@ public class mancala {
 		for(int i=0;i<12;i++){
 			//If can jump right jumps right 
 			if(i+2<12&&board[i]==1&&board[i+1]==1&&board[i+2]==0){
-				temp=board.clone();
+				
+				temp=board.clone();//Clone to change 
 				temp[i]=temp[i+1]=0;
 				temp[i+2]=1;
-				int left=minRocks(temp,memory);
 				
-				count =Math.min(count, left);//min of two values 
-				memory.put(temp, left);
+				int right=minRocks(temp,memory);//gets count by jumping right
+				
+				count =Math.min(count, right);//min of two values 
+				memory.put(temp, right);//saves in memory
 			}
 			//If can jump left, jumps left 
 			if(i-2>=0&&board[i]==1&&board[i-1]==1&&board[i-2]==0){
 				temp=board.clone();
 				temp[i]=temp[i-1]=0;
 				temp[i-2]=1;
-				int right =minRocks(temp,memory);
+				int left =minRocks(temp,memory);//gets count by jumping left 
 				
-				count=Math.min(count, right);//Maximum of three values 
-				memory.put(temp, right);
+				count=Math.min(count, left);//Min of value 
+				memory.put(temp, left); //saves in memory 
 			}	
 		}
 						
 		return count;
 	}
-	
+	//Gets results for an array of boards 
 	public static int[] playGames(int[][] boards){
 		int[] results= new int[boards.length];
 		int place=0;
 		
+		//Gets minimum remaining rocks 
 		for(int[] board: boards){
+			//new memory 
 			HashMap<int[],Integer> memory =new HashMap<int[], Integer>();
+			//Gets result 
 			results[place]=minRocks(board,memory);
 			place++;
 		}
 		return results;
 	}
 
-
+	//Reads file 
 	public static int[][] readFile(String file){
 		try{
 			FileReader fr = new FileReader(file);//Make Reader 
@@ -105,7 +114,7 @@ public class mancala {
 
 
 
-
+	//Writes file 
 	public static void writeFile(String fileName,int[] results){
 		try {
 			File file =new File(fileName);
@@ -120,6 +129,7 @@ public class mancala {
 				bw.write(line);
 				bw.newLine();
 			}
+		
 			bw.close();
 			fw.close();
 			
@@ -129,18 +139,13 @@ public class mancala {
 		
 	}
 	
-	
+	//Driver 
 	public static void main(String[] args){
-		final long startTime = System.currentTimeMillis();
-		int input[][]=readFile("/Users/Aidan/Desktop/COMP2018/Comp251/CS251/src/A5/testMancala.txt");
 		
+		int input[][]=readFile("testMancala.txt");
 		int[] output= playGames(input);
-		writeFile("/Users/Aidan/Desktop/last.txt",output);
-		System.out.println("Done");
-
-		final long endTime = System.currentTimeMillis();
-
-		System.out.println("Total execution time: " + (endTime - startTime));
+		writeFile("testMancala_solution.txt",output);
+		
 	}
 	
 	

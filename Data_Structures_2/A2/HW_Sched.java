@@ -74,12 +74,15 @@ public class HW_Sched {
 		
 		//Initializes the homeworkPlan, which you must fill out and output
 		int[] homeworkPlan = new int[Assignments.size()];
+		
 		//YOUR CODE GOES HERE
 		int[] placeTaken = new int[lastDeadline+1];//O(1) checking if full 
 		
 		for(int i=0;i<m;i++){
+			
 			Assignment a=Assignments.get(i);//Get assignment 
 			int deadline = a.deadline; 
+			
 			while(deadline>0){//GO FROM LAST availible place TO 1(place taken[0] will always be zero)
 				if(placeTaken[deadline]==0){
 					homeworkPlan[a.number]=deadline;//set equal to that spot 

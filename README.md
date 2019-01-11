@@ -1,2 +1,2 @@
 # Fall 2018 Class
-Classes taken in Fall 2018
+Courses taken in Fall 2018

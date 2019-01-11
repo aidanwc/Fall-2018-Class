@@ -76,8 +76,10 @@ public class FordFulkerson {
 				error=true;
 			}
 		}
+		
 		WGraph capacities = new WGraph(graph);//BACKUP
 		ArrayList<Edge> edges= graph.getEdges();
+		
 		for(Edge e: edges ){
 			graph.setEdge(e.nodes[0], e.nodes[1], 0); //set flow to zero
 		}
@@ -97,8 +99,6 @@ public class FordFulkerson {
 				
 				residual= residual(graph, capacities);//update residual
 				path= pathDFS(source,destination,residual);//find new path
-				
-					
 				
 			}
 		}
@@ -136,7 +136,7 @@ public class FordFulkerson {
 			}
 		}
 	}
-	//HELPER method that finds bottleneck 
+	//Helper method that finds bottleneck 
 	public static int bottleNeck(WGraph graph,WGraph capacity,ArrayList<Integer> path){
 		int bottleNeck =2147483647;//max possible value 
 		
@@ -160,11 +160,13 @@ public class FordFulkerson {
 		}
 		return bottleNeck;
 	}
-	//HELPER to create residual graph
+	
+	//Helper to create residual graph
 	public static WGraph residual(WGraph graph, WGraph capacity){
 		
 		WGraph inverse = new WGraph(graph);
 		ArrayList<Edge> edges = graph.getEdges();//get edges 
+		
 		for(Edge e: edges){
 			if(e.weight<=capacity.getEdge(e.nodes[0], e.nodes[1]).weight){//update forward edge 
 				inverse.setEdge(e.nodes[0], e.nodes[1],capacity.getEdge(e.nodes[0], e.nodes[1]).weight-e.weight);
@@ -176,11 +178,12 @@ public class FordFulkerson {
 		return inverse;//return inverse 
 	}
 	
-	//helper method for augmenting 
+	//Helper method for augmenting 
 	public static void augment(WGraph graph, WGraph capacity, ArrayList<Integer> path, int bottleneck){
 		
 		for(int i=0;i<path.size()-1;i++){//terminate at right place 
 			Edge edge = graph.getEdge(path.get(i), path.get(i+1));
+			
 			if(edge!=null){//if edge is not null then it is forward 
 				graph.setEdge(edge.nodes[0], edge.nodes[1], edge.weight+bottleneck);
 			}else{//edge is backwards 

@@ -1,2 +1,2 @@
-# Comp251
-Projects for Algorithms 2 Class taken in the fall of 2018, 
+#Fall_2018_Class
+Classes taken in Fall 2018
